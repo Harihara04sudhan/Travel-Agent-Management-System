@@ -18,7 +18,7 @@ A comprehensive web-based system for travel agencies to manage customers, travel
 
 Make sure you have the following installed:
 
-- Python 3.8+ 
+- Python 3.8+ (python3 command)
 - Pip (Python package installer)
 - Git
 
@@ -32,13 +32,14 @@ Make sure you have the following installed:
 
 2. Create and activate a virtual environment
    ```bash
-   python -m venv venv
+   # Ensure you are in the travel-agent-management-system directory
+   python3 -m venv oose  # Or your preferred name e.g., venv
    
    # On Windows
-   venv\Scripts\activate
+   oose\Scripts\activate
    
    # On Linux/macOS
-   source venv/bin/activate
+   source oose/bin/activate
    ```
 
 3. Install dependencies
@@ -48,17 +49,27 @@ Make sure you have the following installed:
 
 4. Initialize the database
    ```bash
-   python init_db.py
+   python3 init_db.py
    ```
 
 5. Run the application
    ```bash
+   # Ensure your FLASK_APP environment variable is set.
+   # If your main app is in the 'app' package (e.g., app/__init__.py creates the Flask app instance):
+   # On Linux/macOS:
+   # export FLASK_APP=app
+   # On Windows (Command Prompt):
+   # set FLASK_APP=app
+   # On Windows (PowerShell):
+   # $env:FLASK_APP="app"
+   #
+   # If app/__init__.py uses an app factory like create_app(), you might use:
+   # export FLASK_APP="app:create_app()" (adjust for your OS)
+
    flask run
-   # Or
-   python app.py
    ```
 
-6. Access the application in your web browser at `http://127.0.0.1:5000/`
+6. Access the application in your web browser at `http://120.0.1:5000/`
 
 ### Default Logins
 
@@ -75,16 +86,41 @@ Make sure you have the following installed:
 ```
 travel-agent-management-system/
 ├── app/                    # Application package
-│   ├── __init__.py         # App factory and extensions
-│   ├── models.py           # Database models
-│   ├── routes.py           # Application routes
-│   ├── static/             # Static assets (CSS, JS)
-│   └── templates/          # HTML templates
+│   ├── __init__.py         # App factory and Flask app instance
+│   ├── models.py           # Database models (SQLAlchemy)
+│   ├── routes.py           # Application routes and view functions
+│   ├── static/             # Static assets
+│   │   ├── css/
+│   │   │   └── style.css   # Main stylesheet
+│   │   └── js/
+│   │       ├── script.js   # General JavaScript (if any)
+│   │       └── validation.js # Form validation JavaScript
+│   └── templates/          # HTML templates (Jinja2)
+│       ├── base.html       # Base template for layout
+│       ├── index.html      # Homepage template
+│       ├── login.html      # Login and registration page
+│       ├── dashboard.html  # Admin dashboard
+│       ├── auth/
+│       │   └── register.html # Customer registration specific template (if separate)
+│       ├── packages/       # Admin package management templates
+│       │   ├── list.html
+│       │   ├── create.html
+│       │   └── ...
+│       ├── user/           # Customer-facing templates
+│       │   ├── dashboard.html
+│       │   ├── packages.html
+│       │   ├── receipt.html
+│       │   └── ...
+│       └── ...             # Other templates for bookings, customers etc.
 ├── tests/                  # Test suite
-├── app.py                  # Application entry point
-├── config.py               # Configuration settings
+│   ├── __init__.py
+│   ├── conftest.py         # Pytest configuration and fixtures
+│   └── test_app.py         # Application tests
+├── config.py               # Configuration settings (e.g., database URI)
 ├── init_db.py              # Database initialization script
-└── requirements.txt        # Project dependencies
+├── requirements.txt        # Project dependencies
+├── .gitignore              # Specifies intentionally untracked files that Git should ignore
+└── README.md               # This file
 ```
 
 ## Testing
