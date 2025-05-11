@@ -163,3 +163,16 @@ A testing script is included to help diagnose common issues:
 ```
 
 For more information about testing, please see [TESTING.md](TESTING.md).
+
+## Contributing & Feedback
+
+We welcome contributions and feedback! If you encounter any issues, have suggestions for improvements, or would like to contribute to the project, please feel free to:
+
+- **Open an Issue**: Report bugs or suggest features on the [GitHub Issues page](https://github.com/Harihara04sudhan/oose/issues).
+- **Submit a Pull Request**: If you'd like to contribute code, please fork the repository and submit a pull request with your changes.
+
+Your input is valuable in making this project better!
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
