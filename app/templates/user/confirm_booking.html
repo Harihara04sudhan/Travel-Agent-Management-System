@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Confirm Booking</h2>
+        <a href="{{ url_for('user.dashboard') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Payment and Confirmation</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('user.confirm_booking', booking_id=booking.id) }}">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> To complete your booking, please select a payment method and confirm the details below.
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Payment Method</h5>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="payment_method" id="credit_card" value="Credit Card" checked>
+                                <label class="form-check-label" for="credit_card">
+                                    <i class="far fa-credit-card"></i> Credit Card
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="PayPal">
+                                <label class="form-check-label" for="paypal">
+                                    <i class="fab fa-paypal"></i> PayPal
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="payment_method" id="bank_transfer" value="Bank Transfer">
+                                <label class="form-check-label" for="bank_transfer">
+                                    <i class="fas fa-university"></i> Bank Transfer
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Booking Summary</h5>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Package:</th>
+                                        <td>{{ booking.package.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Destination:</th>
+                                        <td>{{ booking.package.destination }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Travel Date:</th>
+                                        <td>{{ booking.travel_date.strftime('%B %d, %Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Number of Travelers:</th>
+                                        <td>{{ booking.num_travelers }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Price Per Person:</th>
+                                        <td>${{ booking.package.price }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Subtotal:</th>
+                                        <td>${{ booking.total_price }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Estimated Tax (10%):</th>
+                                        <td>${{ (booking.total_price * 0.1) | round(2) }}</td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <th>Total Amount:</th>
+                                        <td><strong>${{ (booking.total_price * 1.1) | round(2) }}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the Terms and Conditions and Cancellation Policy
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-check-circle"></i> Confirm and Pay Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Customer Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ booking.customer.name }}</p>
+                    <p><strong>Email:</strong> {{ booking.customer.email }}</p>
+                    <p><strong>Phone:</strong> {{ booking.customer.phone }}</p>
+                    <p><strong>Address:</strong> {{ booking.customer.address }}</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">Important Notice</h5>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Cancellation Policy:</strong> Free cancellation up to 48 hours before the travel date.
+                        Cancellations within 48 hours may be subject to charges.
+                    </p>
+                    <p>
+                        <strong>Payment Security:</strong> All payments are secure and encrypted. 
+                        Your credit card information is never stored on our servers.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

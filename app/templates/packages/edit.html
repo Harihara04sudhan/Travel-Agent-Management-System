@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>Edit Travel Package</h1>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('package.edit_package', id=package.id) }}" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="name" class="form-label">Package Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ package.name }}" required>
+                <div class="invalid-feedback">
+                    Please enter a package name.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required>{{ package.description }}</textarea>
+                <div class="invalid-feedback">
+                    Please enter a description.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="destination" class="form-label">Destination</label>
+                <input type="text" class="form-control" id="destination" name="destination" value="{{ package.destination }}" required>
+                <div class="invalid-feedback">
+                    Please enter a destination.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="duration" class="form-label">Duration (days)</label>
+                <input type="number" class="form-control" id="duration" name="duration" min="1" value="{{ package.duration }}" required>
+                <div class="invalid-feedback">
+                    Please enter a valid duration.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="price" class="form-label">Price ($)</label>
+                <input type="number" class="form-control" id="price" name="price" min="0.01" step="0.01" value="{{ package.price }}" required>
+                <div class="invalid-feedback">
+                    Please enter a valid price.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="availability" class="form-label">Availability</label>
+                <input type="number" class="form-control" id="availability" name="availability" min="0" value="{{ package.availability }}" required>
+                <div class="invalid-feedback">
+                    Please enter availability.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Update Package</button>
+                <a href="{{ url_for('package.view_package', id=package.id) }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

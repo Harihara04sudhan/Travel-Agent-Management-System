@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Book Package: {{ package.name }}</h2>
+        <a href="{{ url_for('user.view_package_details', id=package.id) }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Back to Package Details
+        </a>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Booking Form</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('user.book_package', package_id=package.id) }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="travel_date" class="form-label">Travel Date</label>
+                                <input type="date" class="form-control" id="travel_date" name="travel_date" required>
+                                <small class="form-text text-muted">Select your preferred travel date</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="num_travelers" class="form-label">Number of Travelers</label>
+                                <input type="number" class="form-control" id="num_travelers" name="num_travelers" 
+                                       min="1" max="{{ package.availability }}" value="1" required>
+                                <small class="form-text text-muted">Maximum {{ package.availability }} available</small>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Customer Information</label>
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                    <p class="mb-1"><strong>Name:</strong> {{ current_user.name }}</p>
+                                    <p class="mb-1"><strong>Email:</strong> {{ current_user.email }}</p>
+                                    <p class="mb-1"><strong>Phone:</strong> {{ current_user.phone }}</p>
+                                    <p class="mb-0"><strong>Address:</strong> {{ current_user.address }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Package Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="text" class="form-control" value="{{ package.price }}" readonly>
+                                <span class="input-group-text">per person</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Estimated Total</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="text" class="form-control" id="estimated_total" value="{{ package.price }}" readonly>
+                            </div>
+                            <small class="form-text text-muted">
+                                Final amount may include taxes and fees shown at confirmation
+                            </small>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Proceed to Confirmation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Package Summary</h5>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ package.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ package.destination }}</h6>
+                    <p class="card-text">{{ package.description[:100] }}{% if package.description|length > 100 %}...{% endif %}</p>
+                    
+                    <ul class="list-group list-group-flush mt-3">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Duration:</span>
+                            <span>{{ package.duration }} days</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Price per person:</span>
+                            <span class="fw-bold">${{ package.price }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Calculate estimated total when number of travelers changes
+    document.getElementById('num_travelers').addEventListener('change', function() {
+        const numTravelers = parseInt(this.value) || 1;
+        const pricePerPerson = {{ package.price }};
+        const estimatedTotal = (numTravelers * pricePerPerson).toFixed(2);
+        document.getElementById('estimated_total').value = estimatedTotal;
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-body p-5">
+            <!-- Receipt Header -->
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h2 class="mb-3">
+                        <i class="fas fa-receipt text-primary me-2"></i>Receipt
+                    </h2>
+                    <div>
+                        <strong>Receipt Number:</strong> {{ receipt.receipt_number }}<br>
+                        <strong>Date:</strong> {{ receipt.created_at.strftime('%B %d, %Y') }}<br>
+                        <strong>Payment Status:</strong> 
+                        <span class="badge bg-success">{{ receipt.payment_status }}</span>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-sm-end">
+                    <h4 class="mb-3">Travel Management System</h4>
+                    <div>
+                        <i class="fas fa-map-marker-alt me-1"></i> 123 Travel Street<br>
+                        <i class="fas fa-phone me-1"></i> (555) 123-4567<br>
+                        <i class="fas fa-envelope me-1"></i> contact@travel.com
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer and Package Details -->
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h5 class="mb-3">Customer Details</h5>
+                    <div>
+                        <strong>{{ booking.customer.name }}</strong><br>
+                        <i class="fas fa-envelope me-1"></i> {{ booking.customer.email }}<br>
+                        <i class="fas fa-phone me-1"></i> {{ booking.customer.phone }}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h5 class="mb-3">Package Details</h5>
+                    <div>
+                        <strong>{{ booking.package.name }}</strong><br>
+                        <i class="fas fa-map-marked me-1"></i> {{ booking.package.destination }}<br>
+                        <i class="fas fa-calendar-alt me-1"></i> Travel Date: {{ booking.travel_date.strftime('%B %d, %Y') }}<br>
+                        <i class="fas fa-users me-1"></i> Number of Travelers: {{ booking.num_travelers }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Details -->
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Description</th>
+                            <th class="text-end" style="width: 150px;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ booking.package.name }} ({{ booking.num_travelers }} traveler{{ 's' if booking.num_travelers > 1 }})
+                                <br>
+                                <small class="text-muted">
+                                    {{ booking.package.duration }} days at {{ booking.package.destination }}
+                                </small>
+                            </td>
+                            <td class="text-end">${{ "%.2f"|format(booking.total_price) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-end"><strong>Total Amount</strong></td>
+                            <td class="text-end"><strong>${{ "%.2f"|format(receipt.amount) }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <h5 class="mb-3">Payment Information</h5>
+                    <div>
+                        <strong>Method:</strong> {{ receipt.payment_method }}<br>
+                        <strong>Date:</strong> {{ receipt.created_at.strftime('%B %d, %Y %H:%M') }}<br>
+                        <strong>Status:</strong> 
+                        <span class="badge bg-success">{{ receipt.payment_status }}</span>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-sm-end mt-4">
+                    <button onclick="window.print()" class="btn btn-primary">
+                        <i class="fas fa-print me-2"></i>Print Receipt
+                    </button>
+                    <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary ms-2">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Print Styles -->
+<style>
+    @media print {
+        header, footer, .btn {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        body {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .container {
+            width: 100% !important;
+            max-width: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+    }
+</style>
+{% endblock %}

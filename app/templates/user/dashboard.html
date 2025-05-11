@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Welcome, {{ current_user.name }}</h2>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">My Bookings</h5>
+                    <p class="card-text display-4">{{ bookings|length }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="#my-bookings" class="text-white">View Details <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Available Packages</h5>
+                    <p class="card-text display-4">{{ available_packages|length }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="{{ url_for('user.view_packages') }}" class="text-white">Explore <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">My Profile</h5>
+                    <p class="card-text">{{ current_user.email }}<br>{{ current_user.phone }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="#" class="text-white">Edit Profile <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0" id="my-bookings">My Bookings</h5>
+                </div>
+                <div class="card-body">
+                    {% if bookings %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Package</th>
+                                        <th>Travel Date</th>
+                                        <th>Travelers</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for booking in bookings %}
+                                    <tr>
+                                        <td>#{{ booking.id }}</td>
+                                        <td>{{ booking.package.name }}</td>
+                                        <td>{{ booking.travel_date.strftime('%b %d, %Y') }}</td>
+                                        <td>{{ booking.num_travelers }}</td>
+                                        <td>${{ booking.total_price }}</td>
+                                        <td>
+                                            <span class="badge {% if booking.status == 'confirmed' %}bg-success{% elif booking.status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                                {{ booking.status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if booking.receipt %}
+                                                <a href="{{ url_for('user.view_receipt', receipt_id=booking.receipt.id) }}" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-file-invoice"></i> Receipt
+                                                </a>
+                                            {% elif booking.status == 'pending' %}
+                                                <a href="{{ url_for('user.confirm_booking', booking_id=booking.id) }}" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-check"></i> Confirm
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-center py-3">You don't have any bookings yet.</p>
+                        <div class="text-center">
+                            <a href="{{ url_for('user.view_packages') }}" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Explore Packages
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

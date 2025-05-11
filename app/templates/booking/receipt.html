@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-sm">
+        <div class="card-body p-5">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h1 class="h3 mb-3">Receipt</h1>
+                    <div>
+                        <strong>Receipt Number:</strong> {{ receipt.receipt_number }}<br>
+                        <strong>Date:</strong> {{ receipt.created_at.strftime('%B %d, %Y') }}<br>
+                        <strong>Payment Status:</strong> 
+                        <span class="badge {% if receipt.payment_status == 'PAID' %}bg-success{% else %}bg-warning{% endif %}">
+                            {{ receipt.payment_status }}
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-sm-end">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="mb-3" style="max-height: 50px;">
+                    <div>
+                        <strong>Travel Management System</strong><br>
+                        123 Travel Street<br>
+                        City, State 12345<br>
+                        contact@travel.com
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h6 class="mb-3">Customer Details:</h6>
+                    <div>
+                        <strong>{{ booking.customer.name }}</strong><br>
+                        {{ booking.customer.email }}<br>
+                        {{ booking.customer.phone }}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="mb-3">Package Details:</h6>
+                    <div>
+                        <strong>{{ booking.package.name }}</strong><br>
+                        Duration: {{ booking.package.duration }} days<br>
+                        Travel Date: {{ booking.travel_date.strftime('%B %d, %Y') }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive mb-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ booking.package.name }}</td>
+                            <td class="text-end">${{ "%.2f"|format(booking.package.price) }}</td>
+                        </tr>
+                        {% if booking.additional_services %}
+                        <tr>
+                            <td>Additional Services</td>
+                            <td class="text-end">${{ "%.2f"|format(booking.additional_services_cost) }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="text-end"><strong>Total</strong></td>
+                            <td class="text-end"><strong>${{ "%.2f"|format(receipt.amount) }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <h6 class="mb-3">Payment Details:</h6>
+                    <div>
+                        <strong>Method:</strong> {{ receipt.payment_method }}<br>
+                        <strong>Transaction Date:</strong> {{ receipt.created_at.strftime('%B %d, %Y %H:%M') }}
+                    </div>
+                </div>
+                <div class="col-sm-4 text-sm-end">
+                    <button onclick="window.print()" class="btn btn-primary">
+                        <i class="fas fa-print me-2"></i>Print Receipt
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Print Styles -->
+<style>
+    @media print {
+        header, .btn-primary {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .card-body {
+            padding: 0 !important;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>Dashboard</h1>
+    </div>
+    <div class="card-body">
+        <p>Welcome, {{ current_user.username }}! Here's an overview of your travel agency.</p>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">{{ packages_count }}</div>
+                <div class="stat-label">Travel Packages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ customers_count }}</div>
+                <div class="stat-label">Customers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ bookings_count }}</div>
+                <div class="stat-label">Total Bookings</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2>Recent Bookings</h2>
+    </div>
+    <div class="card-body">
+        {% if recent_bookings %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Package</th>
+                    <th>Travel Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in recent_bookings %}
+                <tr>
+                    <td>{{ booking.id }}</td>
+                    <td>{{ booking.customer.name }}</td>
+                    <td>{{ booking.package.name }}</td>
+                    <td>{{ booking.travel_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ booking.status }}</td>
+                    <td>
+                        <a href="{{ url_for('booking.view_booking', id=booking.id) }}" class="btn btn-primary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No bookings found.</p>
+        {% endif %}
+        
+        <a href="{{ url_for('booking.list_bookings') }}" class="btn btn-primary">View All Bookings</a>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2>Quick Actions</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <a href="{{ url_for('package.create_package') }}" class="btn btn-primary">Add New Package</a>
+                <a href="{{ url_for('customer.create_customer') }}" class="btn btn-primary">Add New Customer</a>
+                <a href="{{ url_for('booking.create_booking') }}" class="btn btn-primary">Create Booking</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

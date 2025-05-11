@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ package.name }}</h2>
+        <a href="{{ url_for('user.view_packages') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Back to Packages
+        </a>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Package Details</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-3 text-muted">{{ package.destination }}</h6>
+                    
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Description</h6>
+                        <p>{{ package.description }}</p>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">Duration</h6>
+                                    <p class="card-text display-6">{{ package.duration }} days</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">Available Spots</h6>
+                                    <p class="card-text display-6">{{ package.availability }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="{{ url_for('user.book_package', package_id=package.id) }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-ticket-alt"></i> Book Now - ${{ package.price }} per person
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional package information could be added here -->
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Package Highlights</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Destination</span>
+                            <span class="badge bg-primary">{{ package.destination }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Duration</span>
+                            <span class="badge bg-primary">{{ package.duration }} days</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Price per person</span>
+                            <span class="badge bg-success">${{ package.price }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Available spots</span>
+                            <span class="badge bg-warning">{{ package.availability }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

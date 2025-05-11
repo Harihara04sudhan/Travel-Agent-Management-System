@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h1>{{ customer.name }}</h1>
+        <div>
+            <a href="{{ url_for('customer.edit_customer', id=customer.id) }}" class="btn btn-primary">Edit</a>
+            <form action="{{ url_for('customer.delete_customer', id=customer.id) }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-danger delete-btn">Delete</button>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">{{ customer.email }}</dd>
+            
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">{{ customer.phone or 'Not provided' }}</dd>
+            
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">{{ customer.address or 'Not provided' }}</dd>
+            
+            <dt class="col-sm-3">Customer Since</dt>
+            <dd class="col-sm-9">{{ customer.created_at.strftime('%Y-%m-%d') }}</dd>
+        </dl>
+        
+        <h2 class="mt-4">Booking History</h2>
+        {% if customer.bookings %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Package</th>
+                    <th>Travel Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in customer.bookings %}
+                <tr>
+                    <td>{{ booking.id }}</td>
+                    <td>{{ booking.package.name }}</td>
+                    <td>{{ booking.travel_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ booking.status }}</td>
+                    <td>
+                        <a href="{{ url_for('booking.view_booking', id=booking.id) }}" class="btn btn-primary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No bookings for this customer yet.</p>
+        {% endif %}
+        
+        <div class="mt-4">
+            <a href="{{ url_for('booking.create_booking') }}" class="btn btn-primary">Create New Booking</a>
+            <a href="{{ url_for('customer.list_customers') }}" class="btn btn-secondary">Back to Customers</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

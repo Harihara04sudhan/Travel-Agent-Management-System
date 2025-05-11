@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>Create New Booking</h1>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('booking.create_booking') }}" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="customer_id" class="form-label">Customer</label>
+                <select class="form-control" id="customer_id" name="customer_id" required>
+                    <option value="">Select a customer</option>
+                    {% for customer in customers %}
+                    <option value="{{ customer.id }}">{{ customer.name }} ({{ customer.email }})</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Please select a customer.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="package_id" class="form-label">Travel Package</label>
+                <select class="form-control" id="package-select" name="package_id" required>
+                    <option value="">Select a package</option>
+                    {% for package in packages %}
+                    <option value="{{ package.id }}" data-price="{{ package.price }}">
+                        {{ package.name }} ({{ package.destination }}, {{ package.duration }} days, ${{ package.price }})
+                    </option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Please select a travel package.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="travel_date" class="form-label">Travel Date</label>
+                <input type="date" class="form-control date-picker" id="travel_date" name="travel_date" required>
+                <div class="invalid-feedback">
+                    Please select a travel date.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="num_travelers" class="form-label">Number of Travelers</label>
+                <input type="number" class="form-control" id="num-travelers" name="num_travelers" min="1" value="1" required>
+                <div class="invalid-feedback">
+                    Please enter the number of travelers.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Total Price</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <div class="form-control" id="total-price">0.00</div>
+                </div>
+                <small class="form-text text-muted">Total price is automatically calculated based on package price and number of travelers.</small>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create Booking</button>
+                <a href="{{ url_for('booking.list_bookings') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

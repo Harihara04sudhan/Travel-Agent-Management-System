@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <!-- User Type Toggle Switch -->
+            <div class="text-center mb-4">
+                <div class="btn-group user-toggle" role="group" aria-label="User Type Toggle">
+                    <input type="radio" class="btn-check" name="user-type-toggle" id="admin-toggle" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary px-4" for="admin-toggle">
+                        <i class="fas fa-user-tie me-2"></i>Admin
+                    </label>
+                    
+                    <input type="radio" class="btn-check" name="user-type-toggle" id="customer-toggle" autocomplete="off">
+                    <label class="btn btn-outline-primary px-4" for="customer-toggle">
+                        <i class="fas fa-users me-2"></i>Customer
+                    </label>
+                </div>
+            </div>
+
+            <!-- Admin Card -->
+            <div class="card shadow mb-4" id="admin-card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Login</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('auth.login') }}" class="needs-validation" novalidate>
+                        <input type="hidden" name="user_type" value="admin">
+                        
+                        <div class="mb-3">
+                            <label for="admin-username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="admin-username" name="username" placeholder="Enter your username" required>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter your username.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="admin-password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="admin-password" name="password" placeholder="Enter your password" required>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter your password.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="admin-remember" name="remember">
+                                <label class="form-check-label" for="admin-remember">Remember Me</label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login as Admin
+                            </button>
+                        </div>
+                        
+                        <div class="alert alert-info mt-4 mb-0">
+                            <small><i class="fas fa-info-circle me-2"></i>Default admin credentials: <strong>Username:</strong> admin | <strong>Password:</strong> admin123</small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Customer Card -->
+            <div class="card shadow d-none" id="customer-card">
+                <div class="card-header bg-info text-white">
+                    <ul class="nav nav-tabs card-header-tabs" id="customerTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active text-dark" id="signin-tab" data-bs-toggle="tab" data-bs-target="#signin-tab-pane" type="button" role="tab" aria-controls="signin-tab-pane" aria-selected="true">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link text-dark" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup-tab-pane" type="button" role="tab" aria-controls="signup-tab-pane" aria-selected="false">
+                                <i class="fas fa-user-plus me-2"></i>Sign Up
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-4">
+                    <div class="tab-content" id="customerTabContent">
+                        <!-- Sign In Tab -->
+                        <div class="tab-pane fade show active" id="signin-tab-pane" role="tabpanel" aria-labelledby="signin-tab" tabindex="0">
+                            <form method="POST" action="{{ url_for('auth.login') }}" class="needs-validation" novalidate>
+                                <input type="hidden" name="user_type" value="customer">
+                                
+                                <div class="mb-3">
+                                    <label for="customer-email" class="form-label">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input type="email" class="form-control" id="customer-email" name="username" placeholder="Enter your email" required>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid email address.
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="customer-password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <input type="password" class="form-control" id="customer-password" name="password" placeholder="Enter your password" required>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter your password.
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customer-remember" name="remember">
+                                        <label class="form-check-label" for="customer-remember">Remember Me</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-info btn-lg text-white">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login as Customer
+                                    </button>
+                                </div>
+                                
+                                <div class="alert alert-info mt-4 mb-0">
+                                    <small><i class="fas fa-info-circle me-2"></i>Demo customer: <strong>Email:</strong> customer@example.com | <strong>Password:</strong> customer123</small>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Sign Up Tab -->
+                        <div class="tab-pane fade" id="signup-tab-pane" role="tabpanel" aria-labelledby="signup-tab" tabindex="0">
+                            <form method="POST" action="{{ url_for('auth.register') }}" class="needs-validation" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="register-name" class="form-label">Full Name</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <input type="text" class="form-control" id="register-name" name="name" placeholder="Enter your full name" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your name.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="register-email" class="form-label">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                            <input type="email" class="form-control" id="register-email" name="email" placeholder="Enter your email" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid email address.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="register-phone" class="form-label">Phone Number</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                            <input type="tel" class="form-control" id="register-phone" name="phone" placeholder="Enter your phone number" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your phone number.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="register-address" class="form-label">Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-home"></i></span>
+                                            <input type="text" class="form-control" id="register-address" name="address" placeholder="Enter your address" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please enter your address.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="register-password" class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                            <input type="password" class="form-control" id="register-password" name="password" placeholder="Create a password" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please create a password.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="register-confirm-password" class="form-label">Confirm Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                            <input type="password" class="form-control" id="register-confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please confirm your password.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                                        <label class="form-check-label" for="terms">
+                                            I agree to the Terms of Service and Privacy Policy
+                                        </label>
+                                        <div class="invalid-feedback">
+                                            You must agree to the terms to continue.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-user-plus me-2"></i>Register Account
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle between admin and customer cards
+        const adminToggle = document.getElementById('admin-toggle');
+        const customerToggle = document.getElementById('customer-toggle');
+        const adminCard = document.getElementById('admin-card');
+        const customerCard = document.getElementById('customer-card');
+        
+        // Function to handle toggle changes
+        function handleToggleChange() {
+            if (adminToggle.checked) {
+                adminCard.classList.remove('d-none');
+                customerCard.classList.add('d-none');
+            } else {
+                adminCard.classList.add('d-none');
+                customerCard.classList.remove('d-none');
+            }
+        }
+        
+        // Initial setup
+        handleToggleChange();
+        
+        // Add event listeners for toggle changes
+        adminToggle.addEventListener('change', handleToggleChange);
+        customerToggle.addEventListener('change', handleToggleChange);
+        
+        // Form validation
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+        
+        // Password confirmation validation
+        const passwordInput = document.getElementById('register-password');
+        const confirmPasswordInput = document.getElementById('register-confirm-password');
+        
+        if (confirmPasswordInput) {
+            confirmPasswordInput.addEventListener('input', function() {
+                if (this.value !== passwordInput.value) {
+                    this.setCustomValidity('Passwords do not match');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                if (confirmPasswordInput.value !== '' && confirmPasswordInput.value !== this.value) {
+                    confirmPasswordInput.setCustomValidity('Passwords do not match');
+                } else {
+                    confirmPasswordInput.setCustomValidity('');
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

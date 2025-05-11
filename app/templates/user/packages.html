@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Available Travel Packages</h2>
+        <a href="{{ url_for('user.dashboard') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="row">
+        {% if packages %}
+            {% for package in packages %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">{{ package.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ package.destination }}</h6>
+                            <p class="card-text">{{ package.description[:100] }}{% if package.description|length > 100 %}...{% endif %}</p>
+                            <ul class="list-group list-group-flush mb-3">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Duration:</span>
+                                    <span>{{ package.duration }} days</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Price:</span>
+                                    <span class="fw-bold">${{ package.price }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Available Spots:</span>
+                                    <span class="badge bg-success">{{ package.availability }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer d-grid">
+                            <a href="{{ url_for('user.book_package', package_id=package.id) }}" class="btn btn-primary">
+                                <i class="fas fa-ticket-alt"></i> Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    No available travel packages at the moment. Please check back later.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>Welcome to Travel Agent Management System</h1>
+    </div>
+    <div class="card-body">
+        <p>This system helps travel agents manage bookings, customers, and travel packages efficiently.</p>
+        
+        {% if current_user.is_authenticated %}
+            <p>You are logged in as <strong>{{ current_user.username }}</strong>.</p>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+        {% else %}
+            <p>Please log in to access the system.</p>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2>System Features</h2>
+    </div>
+    <div class="card-body">
+        <ul>
+            <li><strong>Customer Management</strong> - Maintain customer profiles and contact information.</li>
+            <li><strong>Travel Package Management</strong> - Create, update and manage travel packages.</li>
+            <li><strong>Booking Management</strong> - Make bookings and track their status.</li>
+            <li><strong>Dashboard</strong> - Get an overview of your business with analytics.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

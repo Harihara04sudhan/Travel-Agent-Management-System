@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h1>Travel Packages</h1>
+        <a href="{{ url_for('package.create_package') }}" class="btn btn-primary">Add New Package</a>
+    </div>
+    <div class="card-body">
+        {% if packages %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Destination</th>
+                    <th>Duration</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for package in packages %}
+                <tr>
+                    <td>{{ package.name }}</td>
+                    <td>{{ package.destination }}</td>
+                    <td>{{ package.duration }} days</td>
+                    <td>${{ package.price }}</td>
+                    <td>{{ package.availability }}</td>
+                    <td>
+                        <a href="{{ url_for('package.view_package', id=package.id) }}" class="btn btn-primary">View</a>
+                        <a href="{{ url_for('package.edit_package', id=package.id) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ url_for('package.delete_package', id=package.id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-danger delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No travel packages found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>Booking #{{ booking.id }}</h1>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Customer</dt>
+            <dd class="col-sm-9">
+                <a href="{{ url_for('customer.view_customer', id=booking.customer.id) }}">{{ booking.customer.name }}</a>
+            </dd>
+            
+            <dt class="col-sm-3">Travel Package</dt>
+            <dd class="col-sm-9">
+                <a href="{{ url_for('package.view_package', id=booking.package.id) }}">{{ booking.package.name }}</a>
+                ({{ booking.package.destination }})
+            </dd>
+            
+            <dt class="col-sm-3">Booking Date</dt>
+            <dd class="col-sm-9">{{ booking.booking_date.strftime('%Y-%m-%d') }}</dd>
+            
+            <dt class="col-sm-3">Travel Date</dt>
+            <dd class="col-sm-9">{{ booking.travel_date.strftime('%Y-%m-%d') }}</dd>
+            
+            <dt class="col-sm-3">Number of Travelers</dt>
+            <dd class="col-sm-9">{{ booking.num_travelers }}</dd>
+            
+            <dt class="col-sm-3">Total Price</dt>
+            <dd class="col-sm-9">${{ booking.total_price }}</dd>
+            
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">
+                {% if booking.status == 'confirmed' %}
+                <span class="badge bg-success">Confirmed</span>
+                {% elif booking.status == 'pending' %}
+                <span class="badge bg-warning">Pending</span>
+                {% elif booking.status == 'cancelled' %}
+                <span class="badge bg-danger">Cancelled</span>
+                {% endif %}
+            </dd>
+        </dl>
+        
+        <h2 class="mt-4">Update Status</h2>
+        <form id="status-form" action="{{ url_for('booking.update_booking_status', id=booking.id) }}" method="POST">
+            <input type="hidden" id="status" name="status" value="{{ booking.status }}">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn {% if booking.status == 'pending' %}btn-primary{% else %}btn-outline-primary{% endif %}" onclick="updateBookingStatus({{ booking.id }}, 'pending')">Pending</button>
+                <button type="button" class="btn {% if booking.status == 'confirmed' %}btn-success{% else %}btn-outline-success{% endif %}" onclick="updateBookingStatus({{ booking.id }}, 'confirmed')">Confirm</button>
+                <button type="button" class="btn {% if booking.status == 'cancelled' %}btn-danger{% else %}btn-outline-danger{% endif %}" onclick="updateBookingStatus({{ booking.id }}, 'cancelled')">Cancel</button>
+            </div>
+        </form>
+        
+        <div class="mt-4">
+            <a href="{{ url_for('booking.list_bookings') }}" class="btn btn-secondary">Back to Bookings</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

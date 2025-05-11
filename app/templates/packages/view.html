@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h1>{{ package.name }}</h1>
+        <div>
+            <a href="{{ url_for('package.edit_package', id=package.id) }}" class="btn btn-primary">Edit</a>
+            <form action="{{ url_for('package.delete_package', id=package.id) }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-danger delete-btn">Delete</button>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Destination</dt>
+            <dd class="col-sm-9">{{ package.destination }}</dd>
+            
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">{{ package.description }}</dd>
+            
+            <dt class="col-sm-3">Duration</dt>
+            <dd class="col-sm-9">{{ package.duration }} days</dd>
+            
+            <dt class="col-sm-3">Price</dt>
+            <dd class="col-sm-9">${{ package.price }}</dd>
+            
+            <dt class="col-sm-3">Availability</dt>
+            <dd class="col-sm-9">{{ package.availability }}</dd>
+            
+            <dt class="col-sm-3">Created At</dt>
+            <dd class="col-sm-9">{{ package.created_at.strftime('%Y-%m-%d') }}</dd>
+        </dl>
+        
+        <h2 class="mt-4">Bookings for this Package</h2>
+        {% if package.bookings %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Travel Date</th>
+                    <th>Number of Travelers</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in package.bookings %}
+                <tr>
+                    <td>{{ booking.customer.name }}</td>
+                    <td>{{ booking.travel_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ booking.num_travelers }}</td>
+                    <td>{{ booking.status }}</td>
+                    <td>
+                        <a href="{{ url_for('booking.view_booking', id=booking.id) }}" class="btn btn-primary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No bookings for this package yet.</p>
+        {% endif %}
+        
+        <div class="mt-4">
+            <a href="{{ url_for('booking.create_booking') }}" class="btn btn-primary">Create New Booking</a>
+            <a href="{{ url_for('package.list_packages') }}" class="btn btn-secondary">Back to Packages</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
